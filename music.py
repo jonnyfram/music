@@ -22,7 +22,7 @@ class Guitarist(Musician):
         print("Twoing, sproing, splang")
         
 #Extended to add Drummer class
-def Drummer(Musician):
+class Drummer(Musician):
     def __init__(self):
         super().__init__(["duff", "daff", "te", "fwaaaaaa"])
     
@@ -38,41 +38,70 @@ def Drummer(Musician):
 class Band(object):
     def __init__(self):
         self.members = {}
-    
-    def hire(self, name, instrument):
-        new_hire = name
+
+    def hire(self, new_hire, instrument):
+        #new_hire = input("What is the new hire called?")
+        #instrument = input("What kind of musician are they?") #removed for faster testing
         
         if instrument == "Drummer":
             self.members[new_hire] = Drummer()
-            print(self.members)
+            
         elif instrument == "Guitarist":
             self.members[new_hire] = Guitarist()
             
         elif instrument == "Bassist":
             self.members[new_hire] = Bassist()
+            
+            #How to pass information to method within class?:
+            #example : one_hit_wonder.hire("BongoBob", "Drummer") from outside class
+
         
     def fire(self):
-        
-        who_to_fire = raw_input("Who do you want to fire?")
-        
-        self.members.pop(who_to_fire)
-        
+        who_to_fire = input("Who do you want to fire?")
+        del self.members[who_to_fire]
         print(who_to_fire+" was booted from the band!")
         
-    def play(self):
-        self.members[Drummer].count()
-        pass
-    
+    def play(self, length):
+        have_drummer = False
+
+        #everyone play solo
+        for all in self.members.values():
+            # isinstance is a check that requires the 'object' and the class to check against?
+            if isinstance(all,Drummer):
+                all.count()
+                #example of calling combustion
+                #all.combust()
+                have_drummer = True
+            
+        if have_drummer == True:
+            for all in self.members.values():
+                all.solo(length)
+
+        else:
+            print("we have no drummer...")
+#What would be a better way to sort through the self.members and call specific methods based on their instrument type?
+#I feel like I should be able to use a for loop to check each member
+
+
+
+#fabricate the band:
 one_hit_wonder = Band()
 
 #hire a 3 piece
 print("Hiring...")
-one_hit_wonder.hire("BongoBob", "Drummer")
-#one_hit_wonder.hire("TwangyJoe", "Guitarist")
-#one_hit_wonder.hire("ThrummyJum", "Bassist")
+one_hit_wonder.hire("bob", "Drummer")
+one_hit_wonder.hire("jo", "Guitarist")
+one_hit_wonder.hire("ju", "Bassist")
+
+#check we have the 3 piece
+print(one_hit_wonder.members.items())
+
+#play
+print("Playing")
+one_hit_wonder.play(3)
 
 #fire someone
-print("The band isn't working out, who do we need to fire?")
+print("The band isn't working out...")
 one_hit_wonder.fire()
 
 
